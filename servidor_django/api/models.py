@@ -14,13 +14,26 @@ class SesionIdeal(models.Model):
     alias = models.CharField(max_length=100)
     fecha_referencia = models.DateField()
 
-    # Aquí están los nuevos campos
-    tamano = models.DecimalField(max_digits=4, decimal_places=2)  # Ej: 2.10
-    periodo = models.IntegerField()  # Ej: 13
+    # Añadimos la zona de referencia
+    zona_referencia = models.CharField(max_length=50, default="Costa da Morte")
 
+    tamano = models.DecimalField(max_digits=4, decimal_places=2)
+    periodo = models.IntegerField()
     marea = models.CharField(max_length=50)
     direccion_viento = models.CharField(max_length=50)
     estado_viento = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"{self.alias} ({self.tamano}m @ {self.periodo}s)"
+        return f"{self.alias} ({self.zona_referencia} | {self.tamano}m @ {self.periodo}s)"
+
+class Match(models.Model):
+    sesion_ideal = models.ForeignKey(SesionIdeal, on_delete=models.CASCADE)
+    fecha_hora_match = models.DateTimeField()
+    altura_real = models.DecimalField(max_digits=4, decimal_places=2)
+    periodo_real = models.IntegerField()
+    viento_real = models.DecimalField(max_digits=4, decimal_places=2)
+    leido_en_zona = models.CharField(max_length=100)
+    creado_el = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Match: {self.sesion_ideal.alias} el {self.fecha_hora_match}"
