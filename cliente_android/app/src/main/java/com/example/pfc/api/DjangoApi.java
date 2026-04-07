@@ -26,4 +26,7 @@ public interface DjangoApi {
     // DELETE: Borrar una sesión específica por su ID
     @DELETE("sesiones/{id}/")
     Call<Void> borrarSesion(@Path("id") int id);
+
+    @GET("matches/")
+    Call<List<Match>> getMatches();
 }

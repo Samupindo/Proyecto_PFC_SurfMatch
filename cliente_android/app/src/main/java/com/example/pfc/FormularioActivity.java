@@ -2,8 +2,10 @@ package com.example.pfc;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import retrofit2.Response;
 public class FormularioActivity extends AppCompatActivity {
 
     private EditText etAlias, etFecha, etTamano, etPeriodo, etMarea, etVientoDir, etVientoEst;
+    private Spinner spinnerZona;
     private Button btnGuardar;
 
     @Override
@@ -28,6 +31,7 @@ public class FormularioActivity extends AppCompatActivity {
 
         etAlias = findViewById(R.id.etAlias);
         etFecha = findViewById(R.id.etFecha);
+        spinnerZona = findViewById(R.id.spinnerZona);
         etTamano = findViewById(R.id.etTamano);
         etPeriodo = findViewById(R.id.etPeriodo);
         etMarea = findViewById(R.id.etMarea);
@@ -35,13 +39,24 @@ public class FormularioActivity extends AppCompatActivity {
         etVientoEst = findViewById(R.id.etVientoEst);
         btnGuardar = findViewById(R.id.btnGuardar);
 
+        // 1. Configuramos las opciones del menú desplegable
+        String[] zonas = {"A Coruña / Norte", "Nemiña / Costa expuesta", "Carnota", "Rías Baixas"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, zonas);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerZona.setAdapter(adapter);
+
         btnGuardar.setOnClickListener(v -> guardarSesion());
     }
 
     private void guardarSesion() {
+        // 2. Leemos la zona que el usuario tiene seleccionada en el menú
+        String zonaSeleccionada = spinnerZona.getSelectedItem().toString();
+
+        // 3. La añadimos al crear la sesión
         SesionIdeal nuevaSesion = new SesionIdeal(
                 etAlias.getText().toString(),
                 etFecha.getText().toString(),
+                zonaSeleccionada,
                 etTamano.getText().toString(),
                 etPeriodo.getText().toString(),
                 etMarea.getText().toString(),

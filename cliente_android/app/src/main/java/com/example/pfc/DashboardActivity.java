@@ -1,59 +1,48 @@
 package com.example.pfc;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.pfc.api.DjangoApi;
-import com.example.pfc.api.RetrofitClient;
-import com.example.pfc.api.SesionIdeal;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
 
 public class DashboardActivity extends AppCompatActivity {
-
-    private static final String TAG = "PruebaAPI";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        obtenerSesionesDelServidor();
-    }
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        ViewPager2 viewPager = findViewById(R.id.viewPager);
+        FloatingActionButton fab = findViewById(R.id.fabAdd);
 
-    private void obtenerSesionesDelServidor() {
-        DjangoApi api = RetrofitClient.getApi();
-        Call<List<SesionIdeal>> call = api.getSesiones();
-
-        call.enqueue(new Callback<List<SesionIdeal>>() {
+        // Configuramos el adaptador para las 2 pestañas
+        viewPager.setAdapter(new FragmentStateAdapter(this) {
+            @NonNull
             @Override
-            public void onResponse(Call<List<SesionIdeal>> call, Response<List<SesionIdeal>> response) {
-                if (!response.isSuccessful()) {
-                    Log.e(TAG, "Error del servidor HTTP: " + response.code());
-                    return;
-                }
-
-                List<SesionIdeal> sesiones = response.body();
-                if (sesiones != null && !sesiones.isEmpty()) {
-                    for (SesionIdeal sesion : sesiones) {
-                        Log.d(TAG, "¡ÉXITO! Recibido: " + sesion.getAlias() +
-                                " | Tamaño: " + sesion.getTamano() + "m | Período: " +
-                                sesion.getPeriodo() + "s");
-                    }
-                } else {
-                    Log.d(TAG, "Conectado, pero no hay sesiones guardadas.");
-                }
+            public Fragment createFragment(int position) {
+                if (position == 0) return new SesionesFragment(); // Pestaña 1
+                return new AlertasFragment(); // Pestaña 2
             }
 
             @Override
-            public void onFailure(Call<List<SesionIdeal>> call, Throwable t) {
-                Log.e(TAG, "Fallo al conectar con Django: " + t.getMessage());
-            }
+            public int getItemCount() { return 2; }
+        });
+
+        // Unimos el TabLayout con el ViewPager
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            if (position == 0) tab.setText("Mis Baños");
+            else tab.setText("Alertas Radar");
+        }).attach();
+
+        fab.setOnClickListener(v -> {
+            startActivity(new Intent(this, FormularioActivity.class));
         });
     }
 }

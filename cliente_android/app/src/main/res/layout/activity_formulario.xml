@@ -31,6 +31,19 @@
             android:hint="Fecha (ej. 2026-04-07)"
             android:layout_marginBottom="12dp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zona del parte meteorológico:"
+            android:textStyle="bold"
+            android:textColor="#555555"/>
+
+        <Spinner
+            android:id="@+id/spinnerZona"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"/>
+
         <EditText
             android:id="@+id/etTamano"
             android:layout_width="match_parent"
@@ -58,7 +71,7 @@
             android:id="@+id/etVientoDir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Dirección Viento (ej. WNW)"
+            android:hint="Dirección Viento (ej. NW)"
             android:layout_marginBottom="12dp"/>
 
         <EditText
