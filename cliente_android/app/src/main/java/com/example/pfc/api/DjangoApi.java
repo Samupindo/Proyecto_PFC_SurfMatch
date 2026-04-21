@@ -29,4 +29,9 @@ public interface DjangoApi {
 
     @GET("matches/")
     Call<List<Match>> getMatches();
+    // Este método actualiza una sesión existente basándose en su ID
+
+    @DELETE("sesiones/{id}/")
+    Call<Void> eliminarSesion(@Path("id") int id);
+
 }

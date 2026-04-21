@@ -1,6 +1,7 @@
 package com.example.pfc.api;
 
 public class SesionIdeal {
+    private int id;
     private String alias;
     private String fecha_referencia;
 
@@ -27,7 +28,9 @@ public class SesionIdeal {
         this.estado_viento = estado_viento;
         this.surfista = surfista;
     }
-
+    public int getId() {
+        return id;
+    }
     public String getAlias() { return alias; }
     public String getFecha_referencia() { return fecha_referencia; }
     public String getZona_referencia() { return zona_referencia; }

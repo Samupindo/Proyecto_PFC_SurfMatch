@@ -27,6 +27,9 @@
             android:name=".LoginActivity"
             android:exported="false" />
 
+        <activity android:name=".DetalleSesionActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".DashboardActivity"
             android:exported="true">

@@ -1,5 +1,6 @@
 package com.example.pfc;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,10 @@ public class SesionesAdapter extends RecyclerView.Adapter<SesionesAdapter.ViewHo
 
     private List<SesionIdeal> listaSesiones;
 
-    // Constructor: recibe la lista de datos cuando creamos el adaptador
     public SesionesAdapter(List<SesionIdeal> listaSesiones) {
         this.listaSesiones = listaSesiones;
     }
 
-    // 1. Infla el diseño de la tarjetita XML que creamos antes
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,28 +29,37 @@ public class SesionesAdapter extends RecyclerView.Adapter<SesionesAdapter.ViewHo
         return new ViewHolder(view);
     }
 
-    // 2. Rellena cada tarjetita con los datos de la sesión correspondiente
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SesionIdeal sesion = listaSesiones.get(position);
 
-        // Ponemos el título
         holder.tvAlias.setText(sesion.getAlias());
 
-        // Construimos la línea de detalles (ej: "2.0m | 13s | NW")
         String detalles = sesion.getTamano() + "m | " +
                 sesion.getPeriodo() + "s | " +
                 sesion.getDireccion_viento();
         holder.tvDetalles.setText(detalles);
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), DetalleSesionActivity.class);
+            intent.putExtra("id", sesion.getId());
+            intent.putExtra("alias", sesion.getAlias());
+            intent.putExtra("fecha", sesion.getFecha_referencia());
+            intent.putExtra("zona", sesion.getZona_referencia());
+            intent.putExtra("tamano", sesion.getTamano());
+            intent.putExtra("periodo", sesion.getPeriodo());
+            intent.putExtra("marea", sesion.getMarea());
+            intent.putExtra("viento_dir", sesion.getDireccion_viento());
+            intent.putExtra("viento_est", sesion.getEstado_viento());
+
+            v.getContext().startActivity(intent);
+        });
     }
 
-    // 3. Le dice al RecyclerView cuántas tarjetas tiene que dibujar en total
     @Override
     public int getItemCount() {
         return listaSesiones.size();
     }
 
-    // Clase interna que enlaza los elementos visuales de una tarjeta
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvAlias, tvDetalles;
 
