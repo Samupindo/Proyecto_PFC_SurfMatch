@@ -12,5 +12,5 @@ class SesionIdealViewSet(viewsets.ModelViewSet):
 
 class MatchViewSet(viewsets.ModelViewSet):
     # Traemos todos los matches, ordenados por fecha (el más reciente primero)
-    queryset = Match.objects.all().order_by('-fecha_hora_match')
+    queryset = Match.objects.all().order_by('fecha_hora_match')
     serializer_class = MatchSerializer
