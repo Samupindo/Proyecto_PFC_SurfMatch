@@ -22,7 +22,6 @@ public class DashboardActivity extends AppCompatActivity {
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         FloatingActionButton fab = findViewById(R.id.fabAdd);
 
-        // Configuramos el adaptador para las 2 pestañas
         viewPager.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
             @Override
@@ -35,7 +34,6 @@ public class DashboardActivity extends AppCompatActivity {
             public int getItemCount() { return 2; }
         });
 
-        // Unimos el TabLayout con el ViewPager
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if (position == 0) tab.setText("Mis Baños");
             else tab.setText("Alertas Radar");

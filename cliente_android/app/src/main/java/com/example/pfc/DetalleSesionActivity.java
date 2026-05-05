@@ -9,11 +9,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pfc.api.DjangoApi;
 import com.example.pfc.api.RetrofitClient;
 import com.example.pfc.api.SesionIdeal;
+import com.google.firebase.auth.FirebaseAuth;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,9 +25,9 @@ public class DetalleSesionActivity extends AppCompatActivity {
 
     private EditText etAlias, etFecha, etTamano, etPeriodo, etMarea, etVientoDir, etVientoEst;
     private Spinner spinnerZona;
-    private Button btnGuardar, btnCancelar;
+    private Button btnGuardar, btnCancelar, btnEliminar;
     private int sesionId;
-
+    String miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,7 @@ public class DetalleSesionActivity extends AppCompatActivity {
         etVientoEst = findViewById(R.id.etVientoEst);
         btnGuardar = findViewById(R.id.btnGuardar);
         btnCancelar = findViewById(R.id.btnCancelar);
+        btnEliminar = findViewById(R.id.btnEliminar);
 
         btnGuardar.setText("Actualizar Cambios");
 
@@ -49,7 +52,6 @@ public class DetalleSesionActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerZona.setAdapter(adapter);
 
-        // 3. Recibir los datos de la tarjeta que hemos tocado
         Intent intent = getIntent();
         sesionId = intent.getIntExtra("id", -1);
         etAlias.setText(intent.getStringExtra("alias"));
@@ -70,6 +72,7 @@ public class DetalleSesionActivity extends AppCompatActivity {
 
         btnCancelar.setOnClickListener(v -> finish());
         btnGuardar.setOnClickListener(v -> actualizarSesion());
+        btnEliminar.setOnClickListener(v -> confirmarEliminacion()); // Evento de borrar
     }
 
     private void actualizarSesion() {
@@ -84,8 +87,7 @@ public class DetalleSesionActivity extends AppCompatActivity {
                 etMarea.getText().toString(),
                 etVientoDir.getText().toString(),
                 etVientoEst.getText().toString(),
-                1 // Aquí deberías poner el ID de usuario real de Firebase en el futuro
-        );
+                miUid        );
 
         DjangoApi api = RetrofitClient.getApi();
         Call<SesionIdeal> call = api.actualizarSesion(sesionId, sesionModificada);
@@ -104,6 +106,37 @@ public class DetalleSesionActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<SesionIdeal> call, Throwable t) {
+                Toast.makeText(DetalleSesionActivity.this, "Fallo de conexión", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void confirmarEliminacion() {
+        new AlertDialog.Builder(this)
+                .setTitle("Eliminar sesión")
+                .setMessage("¿Estás seguro de que quieres borrar este baño ideal? Esta acción no se puede deshacer.")
+                .setPositiveButton("Sí, eliminar", (dialog, which) -> borrarSesionDefinitivamente())
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void borrarSesionDefinitivamente() {
+        DjangoApi api = RetrofitClient.getApi();
+        Call<Void> call = api.eliminarSesion(sesionId);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(DetalleSesionActivity.this, "Sesión eliminada", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(DetalleSesionActivity.this, "Error al eliminar", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(DetalleSesionActivity.this, "Fallo de conexión", Toast.LENGTH_SHORT).show();
             }
         });

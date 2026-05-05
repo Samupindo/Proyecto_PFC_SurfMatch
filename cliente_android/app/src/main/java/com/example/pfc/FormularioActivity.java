@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.pfc.api.DjangoApi;
 import com.example.pfc.api.RetrofitClient;
 import com.example.pfc.api.SesionIdeal;
+import com.google.firebase.auth.FirebaseAuth;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +27,7 @@ public class FormularioActivity extends AppCompatActivity {
     private EditText etAlias, etFecha, etTamano, etPeriodo, etMarea, etVientoDir, etVientoEst;
     private Spinner spinnerZona;
     private Button btnGuardar, btnCancelar;
-
+    String miUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +97,7 @@ public class FormularioActivity extends AppCompatActivity {
                 etMarea.getText().toString(),
                 etVientoDir.getText().toString(),
                 etVientoEst.getText().toString(),
-                1
+                miUid
         );
 
         DjangoApi api = RetrofitClient.getApi();

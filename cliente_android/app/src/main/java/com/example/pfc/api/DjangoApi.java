@@ -8,12 +8,13 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface DjangoApi {
 
     // GET: Obtener la lista de todas las sesiones guardadas
     @GET("sesiones/")
-    Call<List<SesionIdeal>> getSesiones();
+    Call<List<SesionIdeal>> getSesiones(@Query("surfista") String uid);
 
     // POST: Enviar una nueva sesión al servidor para guardarla
     @POST("sesiones/")

@@ -36,9 +36,9 @@ public class SesionesFragment extends Fragment {
     }
 
     private void cargarDatos() {
+        String miUid = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser().getUid();
         DjangoApi api = RetrofitClient.getApi();
-        api.getSesiones().enqueue(new Callback<List<SesionIdeal>>() {
-            @Override
+        api.getSesiones(miUid).enqueue(new Callback<List<SesionIdeal>>() {            @Override
             public void onResponse(Call<List<SesionIdeal>> call, Response<List<SesionIdeal>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     recyclerView.setAdapter(new SesionesAdapter(response.body()));

@@ -13,11 +13,11 @@ public class SesionIdeal {
     private String marea;
     private String direccion_viento;
     private String estado_viento;
-    private int surfista;
+    private String surfista;
 
     public SesionIdeal(String alias, String fecha_referencia, String zona_referencia,
                        String tamano, String periodo, String marea,
-                       String direccion_viento, String estado_viento, int surfista) {
+                       String direccion_viento, String estado_viento, String surfista) {
         this.alias = alias;
         this.fecha_referencia = fecha_referencia;
         this.zona_referencia = zona_referencia;
@@ -39,5 +39,5 @@ public class SesionIdeal {
     public String getMarea() { return marea; }
     public String getDireccion_viento() { return direccion_viento; }
     public String getEstado_viento() { return estado_viento; }
-    public int getSurfista() { return surfista; }
+    public String getSurfista() { return surfista; }
 }

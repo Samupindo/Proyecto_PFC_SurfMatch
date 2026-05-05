@@ -42,8 +42,6 @@ public class AlertasFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Aquí necesitarás crear un AlertasAdapter similar al SesionesAdapter
-                    // Por ahora, si quieres probar, crea el AlertasAdapter basándote en el otro
                     recyclerView.setAdapter(new AlertasAdapter(response.body()));
                 }
             }

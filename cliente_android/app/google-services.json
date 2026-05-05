@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "243647675108",
+    "project_id": "surfmatch-22f5a",
+    "storage_bucket": "surfmatch-22f5a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243647675108:android:0a2d3d4016a36e83a30af1",
+        "android_client_info": {
+          "package_name": "com.example.pfc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWeB-eI18SjxX2wi8H-3_qjivkAd4JuTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

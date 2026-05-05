@@ -16,22 +16,7 @@
         android:theme="@style/Theme.PFC">
 
         <activity
-            android:name=".MatchActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".FormularioActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-
-        <activity android:name=".DetalleSesionActivity"
-            android:exported="false"/>
-
-        <activity
-            android:name=".DashboardActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +24,10 @@
             </intent-filter>
         </activity>
 
-    </application>
+        <activity android:name=".DashboardActivity" android:exported="false" />
+        <activity android:name=".MatchActivity" android:exported="false" />
+        <activity android:name=".FormularioActivity" android:exported="false" />
+        <activity android:name=".DetalleSesionActivity" android:exported="false" />
 
+    </application>
 </manifest>
