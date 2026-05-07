@@ -58,14 +58,13 @@ class Command(BaseCommand):
                             h_real = h_mar_abierto * factor_exposicion
                             p_real = p_list[i] if p_list[i] is not None else 0
 
-                            # --- LA SOLUCIÓN ESTÁ AQUÍ ---
 
                             # 1. Altura Asimétrica: Toleramos poco por abajo (-0.3m), pero mucho por arriba (+1.0m)
                             limite_inf_altura = tam_id - 0.3
                             limite_sup_altura = tam_id + 1.0
 
-                            # 2. Periodo Mínimo: Evitamos el mar revuelto de viento (Día 27)
-                            # Exigimos siempre un mínimo de 8s, o tu ideal menos 4s (lo que sea mayor)
+                            # 2. Periodo Mínimo: Evitamos el mar revuelto de viento
+                            # Exigimos siempre un mínimo de 8s
                             periodo_minimo = max(periodo_id - 4, 8)
 
                             if (limite_inf_altura <= h_real <= limite_sup_altura) and (p_real >= periodo_minimo):
@@ -116,7 +115,6 @@ class Command(BaseCommand):
                         viento_real=viento_seguro,
                         leido_en_zona=sesion.zona_referencia
                     )
-                    # Ahora imprimimos también el periodo para que veas cómo filtra
                     self.stdout.write(self.style.SUCCESS(
                         f"📅 {dt_ganador.strftime('%d/%m %H:00')} | {sesion.alias} | Olas: {datos_dia['altura_calculada']:.2f}m | Per: {periodo_seguro}s | Score: {mejor_puntuacion:.1f}"))
 
